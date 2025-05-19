@@ -1,4 +1,4 @@
-import { auth, signIn, signOut } from "auth"
+import { auth, signOut } from "auth"
 import Link from "next/link";
 
 const Navbar = async () => {
@@ -12,23 +12,16 @@ const Navbar = async () => {
                 <div className="flex items-center">
                     <p>{session.user.name}</p>
                     <form
-                    action={async () => {
-                        'use server'
-                        await signOut()
-                    }}
-                >
-                    <button className="bg-red-500 hover:bg-red-700 text-white py-1 px-4 rounded cursor-pointer ml-2">Sair</button>
-                </form>
+                        action={async () => {
+                            'use server'
+                            await signOut()
+                        }}
+                    >
+                        <button className="bg-red-500 hover:bg-red-700 text-white py-1 px-4 rounded cursor-pointer ml-2">Sair</button>
+                    </form>
                 </div>
             ) : (
-                <form
-                    action={async () => {
-                        'use server'
-                        await signIn()
-                    }}
-                >
-                    <button className="bg-blue-500 hover:bg-blue-700 text-white py-1 px-4 rounded cursor-pointer">Entrar</button>
-                </form>
+                <Link href='/signIn' className="bg-blue-500 hover:bg-blue-700 text-white py-1 px-4 rounded cursor-pointer">Entrar</Link>
             )}
         </div>
     </nav>
