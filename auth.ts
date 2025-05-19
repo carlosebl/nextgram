@@ -12,16 +12,27 @@ const config = {
     session: {strategy: "jwt"},
     providers : [google],
     callbacks: {
-        authorized({request, auth}) {
-
-            const {pathname} = request.nextUrl;
-
-            if (pathname === "/middleware") {
-                return !!auth
-            }
-            return true
+        session({ session, token }) {
+            if (token.sub) session.user.userId = token.sub;
+            return session;
         }
+    },
+    pages: {
+        signIn: "/signin",
     }
 } satisfies NextAuthConfig;
 
 export const { handlers, auth, signIn, signOut } = NextAuth(config);
+
+interface ProviderWithId {
+    id: string;
+    name: string;
+}
+
+export const providerMap = config.providers.map((provider) => {
+    const typeProvider = provider as unknown as ProviderWithId;
+    return {
+        id: typeProvider.id,
+        name: typeProvider.name,
+    }
+})
